@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="tile is-child box">
+  <label class="label is-large">Please edit data by using a form below::</label>
+
+      <form method="POST" action="/update">
+      <div class="field">
+        <label class="label">Place</label>
+        <div class="control">
+          <input class="input" type="text" value="{{ place['place'] }}" name="place">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Country</label>
+        <div class="control">
+          <input class="input" type="text" value="{{ place['country'] }}" name="country">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Date of visit</label>
+        <div class="control">
+          <input class="input" type="date" value="{{ place['visit_date'] }}" name="visit_date">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">How did you get there?</label>
+        <div class="control">
+          <div class="select" value="{{ place['transport'] }}">
+            <select name="transport">
+              {% if place['transport'] =='Plane' %}
+              <option selected>Plane</option>
+              <option>Train</option>
+              <option>Car</option>    
+              <option>Other</option>
+              {% endif %}
+              {% if place['transport'] =='Train' %}
+              <option>Plane</option>
+              <option selected>Train</option>
+              <option>Car</option>    
+              <option>Other</option>
+              {% endif %}
+              {% if place['transport'] =='Car' %}
+              <option>Plane</option>
+              <option>Train</option>
+              <option selected>Car</option>    
+              <option>Other</option>
+              {% endif %}
+              {% if place['transport'] =='Other' %}
+              <option>Plane</option>
+              <option>Train</option>
+              <option>Car</option>    
+              <option selected>Other</option>
+              {% endif %}                                                                                                                                                                           
+            </select>
+          </div>
+        </div>
+      </div>
+      <BR><BR>                        
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary is-link" name="id" value="{{ place['id'] }}">Submit</button>
+        </div>
+        </form>
+        <form method="GET" action="/">
+        <div class="control">
+          <button class="button is-danger is-link ">Cancel</button>
+        </div>
+        </form>
+      </div>
+
+</div>
+{% endblock %}

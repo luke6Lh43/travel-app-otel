@@ -1,0 +1,175 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+        version: v1
+    spec:
+      containers:
+      - name: frontend
+        image: <docker-repo>/travel-app-frontend:0.1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+        env:
+        - name: PLACES_SVC
+          value: places-svc
+        - name: POLL_SVC
+          value: poll-svc
+        - name: AD_SVC
+          value: ad-svc                    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+spec:
+  selector:
+    app: frontend
+  type: NodePort
+  ports:
+    - protocol: TCP
+      name: http-frontend
+      port: 80
+      targetPort: 5000
+      nodePort: 32001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: places
+  labels:
+    app: places
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: places
+  template:
+    metadata:
+      labels:
+        app: places
+        version: v1
+    spec:
+      containers:
+      - name: places
+        image: <docker-repo>/travel-app-places:0.1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5001
+        env:
+        - name: MYSQL_HOST
+          value: mysql-svc
+        - name: MYSQL_USERNAME
+          value: root
+        - name: MYSQL_PASSWORD
+          value: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: places-svc
+spec:
+  selector:
+    app: places
+  ports:
+    - protocol: TCP
+      name: http-places
+      port: 5001
+      targetPort: 5001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ad
+  labels:
+    app: ad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ad
+  template:
+    metadata:
+      labels:
+        app: ad
+        version: v1
+    spec:
+      containers:
+      - name: ad
+        image: <docker-repo>/travel-app-ad:0.1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5002
+        env:
+        - name: AD1_URL
+          value: https://i.postimg.cc/gmW45y5T/ad1.jpg
+        - name: AD2_URL
+          value: https://i.postimg.cc/38xVdtSt/ad2.jpg
+        - name: AD3_URL
+          value: https://i.postimg.cc/WTG8cMSz/ad3.jpg
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ad-svc
+spec:
+  selector:
+    app: ad
+  ports:
+    - protocol: TCP
+      name: http-ad
+      port: 5002
+      targetPort: 5002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poll
+  labels:
+    app: poll
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poll
+  template:
+    metadata:
+      labels:
+        app: poll
+        version: v1
+    spec:
+      containers:
+      - name: poll
+        image: <docker-repo>/travel-app-poll:0.1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5003
+        env:
+        - name: REDIS_HOST
+          value: redis-svc
+        - name: REDIS_PASSWORD
+          value: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: poll-svc
+spec:
+  selector:
+    app: poll
+  ports:
+    - protocol: TCP
+      name: http-poll
+      port: 5003
+      targetPort: 5003

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="tile is-child box is-12">
+  <label class="label is-large">Have you recently visited some nice place? Go ahead and add it to the list!</label>
+  <a href="/add" class="button is-link is-responsive">Add new place to the list!</a>
+</div>
+
+<div class="tile is-child box">
+  <label class="label is-large">Visited places</label>
+
+  <table class='table is-bordered is-striped is-narrow is-hoverable is-fullwidth'>
+      <thead>
+        <tr>
+          <th>Place</th>
+          <th>Country</th>
+          <th>Date</th>
+          <th>How did you get there?</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for places in places %}
+        <tr>
+          <td>{{ places['place'] }}</td>
+          <td>{{ places['country'] }}</td>
+          <td>{{ places['visit_date'] }}</td>
+          <td>{{ places['transport'] }}</td>
+          <td>
+            <div class="buttons">
+              <form method="POST" action="/edit">
+              <button class="button is-success is-small" name="id" value="{{ places['id'] }}" type="submit">Update</button>
+              </form>
+              <form method="POST" action="/delete">
+              <button class="button is-danger is-small" name="id" value="{{ places['id'] }}" type="submit">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+                
+{% endblock %}

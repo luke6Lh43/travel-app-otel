@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simple Travel Application!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+</head>
+
+<body>
+    <section class="hero is-link is-fullheight">
+      <div class="hero-head"></div>
+      <div class="hero-body">
+        <div class="container is-fluid">
+          <div class="columns is-centered">
+            
+            <div class="tile is-ancestor is-vertical is-11">
+
+
+                <div class="tile is-parent">
+                  <div class="tile is-child box is-small">
+                    {% if ad_url=="ERROR" %}
+                    <label class="label is-small">Ups! There is temporary problem with ad service...</label>
+                    {% else %}
+                    <a href="/post_ad"><img src="{{ ad_url }}" border="0"></a>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="tile">
+                  <div class="tile is-parent is-vertical is-9">
+
+                      {% block content %}
+                      {% endblock %}
+
+                  </div>
+                  <div class="tile is-parent is-vertical">
+                    <div class="tile is-child box">
+                      <!-- <label class="label is-small">This is poll tile</label> -->
+
+                          <div class="columns is-centered">
+                            <p class="has-text-black is-size-6">Do you prefer to travel alone or in a group?<BR><BR></p>
+                          </div>
+                          <form id="choice" name='poll' method="POST" action="/poll">
+                            <div class="columns is-centered">
+                              <div class="buttons">
+                                <button class="button is-primary is-medium is-light is-centered" name="choice" value="alone" type="submit">Alone</button>
+                                <button class="button is-danger is-medium is-light" name="choice" value="group" type="submit">Group</button>
+                              </div>
+                              <BR>
+                            </div>
+                          </form>
+                          <BR>
+                          <div class="columns is-centered">
+                            <p class="has-text-black is-size-6">(Tip: you can change your vote)<BR><BR></p>
+                          </div>
+                          <div class="columns is-centered">
+                            <canvas id="chart" width="250" height="250"></canvas>
+                            <script>
+                              var pieData = [
+                                  {
+                                      value: {{values[0]}},
+                                      label: 'Alone',
+                                      color: '#00d1b2'
+                                  },
+                                  {
+                                      value: {{values[1]}},
+                                      label: 'Group',
+                                      color: '#ff3860'
+                                  }
+                                  ];                   
+                              // get bar chart canvas
+                              var mychart = document.getElementById("chart").getContext("2d");
+                              steps = 10
+                              max = {{ max }}
+                        
+                              // draw pie chart
+                              new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData);
+                        
+                            </script>
+                          </div>
+                          <BR>
+                    </div>
+                    <div class="tile is-child box">
+                      <p class="has-text-black is-size-6">This is recommend tile (to be added in next releases)<BR><BR></p>
+                    </div>
+                    <div class="tile is-child box">
+                      <p class="has-text-black is-size-6">This is payment tile (to be added in next releases)<BR><BR></p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-foot"></div>
+    </section>
+    
+</body>
+</html>

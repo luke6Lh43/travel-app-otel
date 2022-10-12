@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="tile is-child box">
+  <label class="label is-large">Please add a place that you've recently visited by using a form below:</label>
+
+  <form method="POST" action="/create">
+    <div class="field">
+      <label class="label">Place</label>
+      <div class="control">
+        <input class="input" name="place" type="text">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Country</label>
+      <div class="control">
+        <input class="input" name="country" type="text">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Date of visit</label>
+      <div class="control">
+        <input class="input" name="visit_date" type="date">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">How did you get there?</label>
+      <div class="control">
+        <div class="select">
+          <select name="transport">
+            <option>Plane</option>
+            <option>Train</option>
+            <option>Car</option>    
+            <option>Other</option>                                                            
+          </select>
+        </div>
+      </div>
+    </div>
+    <BR><BR>                        
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-primary is-link">Submit</button>
+      </div>
+     </form>
+
+      <form method="GET" action="/">
+      <div class="control">
+        <button class="button is-danger is-link ">Cancel</button>
+      </div>
+      </form>
+    </div>
+
+</div>
+
+{% endblock %}
