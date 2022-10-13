@@ -27,7 +27,15 @@ spec:
         - name: POLL_SVC
           value: poll-svc
         - name: AD_SVC
-          value: ad-svc                    
+          value: ad-svc
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "service.namespace=travel-app,service.name=frontend"
+        - name: TRACES_EXPORTER
+          value: "OTLP"   
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://otel-agent:4317"
+        - name: OTEL_METRICS_EXPORTER
+          value: none                    
 ---
 apiVersion: v1
 kind: Service
@@ -74,6 +82,14 @@ spec:
           value: root
         - name: MYSQL_PASSWORD
           value: password
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "service.namespace=travel-app,service.name=places"
+        - name: TRACES_EXPORTER
+          value: "OTLP"   
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://otel-agent:4317"
+        - name: OTEL_METRICS_EXPORTER
+          value: none       
 ---
 apiVersion: v1
 kind: Service
@@ -118,6 +134,14 @@ spec:
           value: https://i.postimg.cc/38xVdtSt/ad2.jpg
         - name: AD3_URL
           value: https://i.postimg.cc/WTG8cMSz/ad3.jpg
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "service.namespace=travel-app,service.name=ad"
+        - name: TRACES_EXPORTER
+          value: "OTLP"   
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://otel-agent:4317"
+        - name: OTEL_METRICS_EXPORTER
+          value: none        
 ---
 apiVersion: v1
 kind: Service
@@ -160,6 +184,14 @@ spec:
           value: redis-svc
         - name: REDIS_PASSWORD
           value: password
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "service.namespace=travel-app,service.name=poll"
+        - name: TRACES_EXPORTER
+          value: "OTLP"   
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://otel-agent:4317"
+        - name: OTEL_METRICS_EXPORTER
+          value: none     
 ---
 apiVersion: v1
 kind: Service

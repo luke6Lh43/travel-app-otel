@@ -14,7 +14,7 @@ mysql_host = os.environ['MYSQL_HOST']
 mysql_username = os.environ['MYSQL_USERNAME']
 mysql_password = os.environ['MYSQL_PASSWORD']
 
-engine = create_engine("mysql+pymysql://" + mysql_username + ":" + mysql_password + "@" + mysql_host + ":3306/places", convert_unicode=True, poolclass=NullPool)
+engine = create_engine("mysql+pymysql://" + mysql_username + ":" + mysql_password + "@" + mysql_host + ":3306/places", poolclass=NullPool)
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
@@ -54,6 +54,7 @@ def read():
         for i in list_of_places:
             data.append(i.toDict())
 
+        db_session.commit()
         db_session.remove()
         return json.dumps(data)
 
@@ -71,7 +72,9 @@ def read_one():
         from models import Places
         place = Places.query.get(id)
 
+        db_session.commit()
         db_session.remove()
+        
         return json.dumps(place.toDict())
     except exc.SQLAlchemyError:
         return Response(status=500) 
@@ -117,4 +120,4 @@ def delete():
 # main driver function!
 if __name__ == '__main__':
 #   app.run(host="0.0.0.0", debug=True, use_reloader=False, port=5001, threaded=True)
-    app.run(host="0.0.0.0", debug=True, port=5001, threaded=True)
+    app.run(host="0.0.0.0", debug=False, port=5001, threaded=True)
