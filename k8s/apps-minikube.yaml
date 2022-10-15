@@ -28,6 +28,8 @@ spec:
           value: poll-svc
         - name: AD_SVC
           value: ad-svc
+        - name: PAYMENT_SVC
+          value: payment-svc
         - name: OTEL_RESOURCE_ATTRIBUTES
           value: "service.namespace=travel-app,service.name=frontend"
         - name: TRACES_EXPORTER
@@ -205,3 +207,51 @@ spec:
       name: http-poll
       port: 5003
       targetPort: 5003
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  labels:
+    app: payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+        version: v1
+    spec:
+      containers:
+      - name: payment
+        image: <docker-repo>/travel-app-payment:0.1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5004
+        env:
+        - name: STRIPE_KEY
+          value: <stripe-key>
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "service.namespace=travel-app,service.name=payment"
+        - name: TRACES_EXPORTER
+          value: "OTLP"   
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://otel-agent:4317"
+        - name: OTEL_METRICS_EXPORTER
+          value: none         
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-svc
+spec:
+  selector:
+    app: payment
+  ports:
+    - protocol: TCP
+      name: http-payment
+      port: 5004
+      targetPort: 5004

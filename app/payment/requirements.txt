@@ -1,3 +1,11 @@
 # To ensure app dependencies are ported from your virtual environment/host machine into your container, run 'pip freeze > requirements.txt' in the terminal to overwrite this file
-flask==2.0.2
-gunicorn==20.1.0
+flask;
+stripe;
+opentelemetry-api;
+opentelemetry-distro;
+opentelemetry-exporter-otlp;
+opentelemetry-exporter-otlp-proto-grpc;
+opentelemetry-exporter-otlp-proto-http;
+opentelemetry-instrumentation;
+opentelemetry-proto;
+opentelemetry-sdk;

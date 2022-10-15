@@ -12,6 +12,7 @@ app = Flask(__name__)
 places_svc = os.environ['PLACES_SVC']
 poll_svc = os.environ['POLL_SVC']
 ad_svc = os.environ['AD_SVC']
+payment_svc = os.environ['PAYMENT_SVC']
 
 #SUPPORTIVE METHODS
 
@@ -262,6 +263,26 @@ def poll():
         response.close()
         return redirect(url_for('index')) 
 
+    except requests.exceptions.RequestException as e:
+        return redirect(url_for('failure'))
+
+@app.route('/donate', methods=['POST'])
+def donate():
+
+    stripe_redirect_url = ""
+
+    currency = request.form.get('currency')
+    amount = request.form.get('amount')
+    source_url = request.url_root
+
+    data = {"currency": currency, "amount": amount, "source_url": source_url}
+    data_json = json.dumps(data)
+    payload = {'json_payload': data_json}
+
+    try:
+        response = requests.post('http://' + payment_svc +':5004/create-checkout-session', json=payload)
+        response.close()
+        return redirect(response.json()) 
     except requests.exceptions.RequestException as e:
         return redirect(url_for('failure'))
 

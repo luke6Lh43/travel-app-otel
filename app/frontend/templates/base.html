@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Simple Travel Application!</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
 </head>
 
@@ -83,10 +84,42 @@
                           <BR>
                     </div>
                     <div class="tile is-child box">
-                      <p class="has-text-black is-size-6">This is recommend tile (to be added in next releases)<BR><BR></p>
+                      <p class="has-text-black has-text-centered is-size-6">
+                        Would you like to donate a dollar (or two) for our travel fund? <i class="fa-regular fa-face-smile"></i></p>
+                      <BR>
+                        <div class="columns is-centered is-vcentered is-mobile">
+                          <form id="donate" name='donate' method="POST" action="/donate">
+                            <div class="field has-addons">
+                            <p class="control">
+                              <span class="select">
+                                <select name="currency">
+                                  <option value="USD">$</option>
+                                  <option value="GBP">£</option>
+                                  <option value="EUR">€</option>
+                                </select>
+                              </span>
+                            </p>
+                            <p class="control">
+                              <span class="select">
+                              <select name="amount">
+                                  <option disabled selected>Amount</option>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="5">5</option>
+                                  <option value="10">10</option>
+                                </select>
+                              </span>
+                            </p>
+                            <p class="control">
+                              <button class="button">Donate!</button>
+                            </p>
+                          </div>
+                        </form>
+                        <BR><BR><BR>
+                      </div>
                     </div>
                     <div class="tile is-child box">
-                      <p class="has-text-black is-size-6">This is payment tile (to be added in next releases)<BR><BR></p>
+                      <p class="has-text-black is-size-6">This is recommend tile (to be added in next releases)<BR><BR></p>
                     </div>
                   </div>
                 </div>
