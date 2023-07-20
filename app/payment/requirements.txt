@@ -9,3 +9,4 @@ opentelemetry-exporter-otlp-proto-http;
 opentelemetry-instrumentation;
 opentelemetry-proto;
 opentelemetry-sdk;
+requests;

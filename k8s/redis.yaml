@@ -23,6 +23,22 @@ spec:
   selector:
     app: redis
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-exporter-svc
+  annotations:
+    appdynamics.com/exporter_type: "redis"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "9121"
+spec:
+  ports:
+  - port: 9121
+    protocol: TCP
+    targetPort: 9121
+  selector:
+    app: redis
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -37,6 +53,9 @@ spec:
     metadata:
       labels:
         app: redis
+      annotations:
+        prometheus.io/port: "9121"
+        prometheus.io/scrape: "true"
     spec:
       containers:
       - image: redis
@@ -60,6 +79,25 @@ spec:
         #   mountPath: /bin/entrypoint.sh
         #   readOnly: true
         #   subPath: entrypoint.sh
+      - name: redis-exporter
+        image: oliver006/redis_exporter:latest
+        args: ["--redis.password", "$(REDIS_PASS)"]
+        env:
+        - name: REDIS_PASS
+          value: password
+        securityContext:
+          runAsUser: 59000
+          runAsGroup: 59000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 9121
       volumes:
       - name: redis-persistent-storage
         persistentVolumeClaim:

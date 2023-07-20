@@ -1,7 +1,8 @@
-from flask import Flask, request, Response
+from flask import Flask, Response, request
 import stripe 
 import json
 import os
+import requests
 
 if "STRIPE_KEY" in os.environ:
     stripe.api_key = os.environ['STRIPE_KEY']
@@ -12,6 +13,8 @@ app = Flask(__name__)
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
+
+    test = requests.get('http://example.com').content
 
     content = request.get_json()
 
